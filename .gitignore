@@ -1,0 +1,37 @@
+# Rust / Cargo
+target/
+**/*.rs.bk
+
+# Solana keypairs (never commit private keys)
+**/*-keypair.json
+!programs/blind-auctions/src/
+
+# Anchor
+.anchor/
+test-ledger/
+
+# Node
+node_modules/
+yarn-error.log
+yarn-debug.log
+npm-debug.log*
+.pnpm-debug.log*
+
+# Build artifacts
+build/*.arcis
+build/*.arcis.ir
+build/*.weight
+
+# Environment
+.env
+.env.*
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Editor
+.vscode/
+.idea/
+*.swp
+*.swo

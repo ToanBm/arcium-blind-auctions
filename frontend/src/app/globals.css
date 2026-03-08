@@ -1,0 +1,48 @@
+@import "tailwindcss";
+
+@theme inline {
+  --color-doma-dark: #041822;
+  --color-doma-blue: #4AC6FF;
+  --font-sans: var(--font-urbanist), ui-sans-serif, system-ui, sans-serif;
+  --font-mono: var(--font-jetbrains-mono), ui-monospace, monospace;
+  --font-logo: var(--font-outfit), sans-serif;
+  --shadow-glow-blue: 0 0 20px rgba(74, 198, 255, 0.2);
+  --shadow-glow-purple: 0 0 20px rgba(139, 92, 246, 0.3);
+  --animate-fade-in: fadeIn 0.6s ease-out forwards;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+body {
+  background: linear-gradient(180deg, #061F2A 0%, #041822 100%);
+  min-height: 100vh;
+  color: white;
+  -webkit-font-smoothing: antialiased;
+}
+
+::-webkit-scrollbar { width: 6px; }
+::-webkit-scrollbar-track { background: #041822; }
+::-webkit-scrollbar-thumb { background: rgba(74, 198, 255, 0.2); border-radius: 3px; }
+
+input[type=number]::-webkit-inner-spin-button,
+input[type=number]::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+input[type=number] { appearance: textfield; -moz-appearance: textfield; }
+
+.wallet-adapter-modal-wrapper {
+  background: linear-gradient(135deg, rgba(11, 30, 38, 0.95) 0%, rgba(11, 30, 38, 0.8) 100%) !important;
+  border: 1px solid rgba(248, 253, 255, 0.1) !important;
+  border-radius: 20px !important;
+  backdrop-filter: blur(8px) !important;
+}
+
+@layer utilities {
+  .bg-doma-card {
+    background: linear-gradient(135deg, rgba(11, 30, 38, 0.8) 0%, rgba(11, 30, 38, 0.4) 100%);
+  }
+}
