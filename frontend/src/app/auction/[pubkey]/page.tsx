@@ -2,6 +2,8 @@
 
 import { use } from "react";
 import { useWallet } from "@solana/wallet-adapter-react";
+import type BN from "bn.js";
+import { type PublicKey } from "@solana/web3.js";
 import Link from "next/link";
 import { useAuction } from "@/hooks/useAuction";
 import { useCloseAuction } from "@/hooks/useCloseAuction";
@@ -156,8 +158,8 @@ export default function AuctionPage({ params }: PageProps) {
           auctionPubkey={pubkey}
           creatorPubkey={auction.creator.toBase58()}
           winnerIdx={auction.winnerIdx as number | null}
-          winningPrice={auction.winningPrice as import("bn.js") | null}
-          bidders={auction.bidders as import("@solana/web3.js").PublicKey[]}
+          winningPrice={auction.winningPrice as BN | null}
+          bidders={auction.bidders as PublicKey[]}
           settled={bidSettled}
           myBidRecord={
             alreadyBid && bidSlotIdx !== null
