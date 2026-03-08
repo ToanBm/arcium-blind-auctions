@@ -1,7 +1,7 @@
 # Blind Auctions — Privacy-Preserving Vickrey Auctions on Solana
 
-[![Live Demo](https://img.shields.io/badge/demo-live-brightgreen)](https://blind-auctions.vercel.app)
-[![GitHub](https://img.shields.io/badge/github-repo-blue)](https://github.com/your-username/blind-auctions)
+[![Live Demo](https://img.shields.io/badge/demo-live-brightgreen)](https://arcium-blind-auctions.vercel.app/)
+[![GitHub](https://img.shields.io/badge/github-repo-blue)](https://github.com/ToanBm/arcium-blind-auctions)
 
 A fully on-chain Vickrey (second-price) blind auction system built on Solana using [Arcium](https://docs.arcium.com) MPC. Bid amounts are encrypted client-side with x25519 + RescueCipher and never visible to anyone — not the auctioneer, not other bidders, not the chain. The winner and Vickrey price are revealed privately by the Arcium MPC network.
 
