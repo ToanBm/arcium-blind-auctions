@@ -8,7 +8,10 @@ interface Props {
   endTime: BN;
 }
 
-function getStatusStyle(status: Record<string, unknown>): {
+function getStatusStyle(
+  status: Record<string, unknown>,
+  endTimeSec: number
+): {
   label: string;
   className: string;
   dot: string;
@@ -19,12 +22,20 @@ function getStatusStyle(status: Record<string, unknown>): {
       className: "bg-yellow-900/30 text-yellow-400 border-yellow-700/40",
       dot: "bg-yellow-400 animate-pulse",
     };
-  if ("active" in status)
+  if ("active" in status) {
+    const isPast = Date.now() / 1000 > endTimeSec;
+    if (isPast)
+      return {
+        label: "Ended",
+        className: "bg-white/5 text-white/50 border-white/10",
+        dot: "bg-white/30",
+      };
     return {
       label: "Active",
       className: "bg-emerald-900/30 text-emerald-400 border-emerald-700/40",
       dot: "bg-emerald-400",
     };
+  }
   if ("closed" in status)
     return {
       label: "MPC Computing…",
@@ -70,8 +81,8 @@ function formatCountdown(seconds: number): string {
 }
 
 export default function AuctionStatus({ status, endTime }: Props) {
-  const { label, className, dot } = getStatusStyle(status);
   const endTimeSec = endTime.toNumber();
+  const { label, className, dot } = getStatusStyle(status, endTimeSec);
   const remaining = useCountdown(endTimeSec);
 
   return (

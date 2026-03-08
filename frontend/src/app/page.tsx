@@ -8,24 +8,33 @@ import { useMyBids } from "@/hooks/useMyBids";
 import AuctionCard from "@/components/AuctionCard";
 import WalletButton from "@/components/WalletButton";
 
-type Filter = "all" | "mine" | "bids";
+type Filter = "active" | "ended" | "mine" | "bids";
+
+function isEnded(account: { status: unknown; endTime: { toNumber: () => number } }) {
+  const status = account.status as Record<string, unknown>;
+  if ("closed" in status || "finalized" in status) return true;
+  return Date.now() / 1000 > account.endTime.toNumber();
+}
 
 export default function Home() {
   const { publicKey } = useWallet();
   const { data: auctions, isLoading, error } = useAuctions();
-  const [filter, setFilter] = useState<Filter>("all");
+  const [filter, setFilter] = useState<Filter>("active");
 
   const allPubkeys = auctions?.map((a) => a.publicKey.toBase58()) ?? [];
   const { data: myBidSet } = useMyBids(allPubkeys);
 
   const filtered = auctions?.filter(({ publicKey: pk, account }) => {
+    if (filter === "active") return !isEnded(account);
+    if (filter === "ended") return isEnded(account);
     if (filter === "mine") return account.creator.toBase58() === publicKey?.toBase58();
     if (filter === "bids") return myBidSet?.has(pk.toBase58()) ?? false;
     return true;
   });
 
   const counts = {
-    all: auctions?.length ?? 0,
+    active: auctions?.filter((a) => !isEnded(a.account)).length ?? 0,
+    ended: auctions?.filter((a) => isEnded(a.account)).length ?? 0,
     mine: auctions?.filter((a) => a.account.creator.toBase58() === publicKey?.toBase58()).length ?? 0,
     bids: myBidSet?.size ?? 0,
   };
@@ -70,8 +79,15 @@ export default function Home() {
     <div className="space-y-6">
       {/* Toolbar */}
       <div className="flex items-center justify-between gap-4">
-        <div className="bg-doma-card border border-white/10 rounded-[20px] p-1 flex items-center gap-1">
-          {(["all", "mine", "bids"] as Filter[]).map((id) => (
+        <div className="bg-doma-card border border-white/10 rounded-[20px] p-1 flex items-center gap-1 flex-wrap">
+          {(
+            [
+              { id: "active", label: "Active" },
+              { id: "ended",  label: "Ended" },
+              { id: "mine",   label: "Mine" },
+              { id: "bids",   label: "My Bids" },
+            ] as { id: Filter; label: string }[]
+          ).map(({ id, label }) => (
             <button
               key={id}
               onClick={() => setFilter(id)}
@@ -81,7 +97,7 @@ export default function Home() {
                   : "text-white/50 hover:text-white hover:bg-white/5"
               }`}
             >
-              {id === "all" ? "All" : id === "mine" ? "Mine" : "My Bids"}
+              {label}
               <span
                 className={`text-xs px-1.5 py-0.5 rounded-full font-medium ${
                   filter === id
@@ -122,13 +138,10 @@ export default function Home() {
         <div className="flex flex-col items-center justify-center py-16 gap-3 text-white/40">
           <span className="text-4xl">🔒</span>
           <p className="text-sm">
-            {filter === "all" ? (
-              <>
-                No auctions yet.{" "}
-                <Link href="/create" className="text-doma-blue hover:underline">
-                  Create one
-                </Link>
-              </>
+            {filter === "active" ? (
+              "No active auctions right now."
+            ) : filter === "ended" ? (
+              "No ended auctions yet."
             ) : filter === "mine" ? (
               "You haven't created any auctions yet."
             ) : (
