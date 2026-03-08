@@ -4,8 +4,8 @@ import { useMemo } from "react";
 import { useAnchorWallet, useConnection } from "@solana/wallet-adapter-react";
 import * as anchor from "@coral-xyz/anchor";
 import { PROGRAM_ID } from "./constants";
-import type { BlindAuctions } from "../../../target/types/blind_auctions";
-import IDL from "../../../target/idl/blind_auctions.json";
+import type { BlindAuctions } from "../idl/blind_auctions";
+import IDL from "../idl/blind_auctions.json";
 
 export function useAnchorProgram() {
   const { connection } = useConnection();

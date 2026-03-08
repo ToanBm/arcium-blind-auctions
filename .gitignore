@@ -1,5 +1,7 @@
 # Rust / Cargo
 target/
+# but keep frontend IDL copies (needed for Vercel builds)
+!frontend/src/idl/
 **/*.rs.bk
 
 # Solana keypairs (never commit private keys)
